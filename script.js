@@ -375,3 +375,65 @@ function onload() {
 }
 
 window.addEventListener("load", onload);
+const day = 27;
+console.log(89 + Math.cos(day/31*Math.PI*2)*5 + (5*sigmoid(parameter)));
+
+const vips= [
+    "08.02.",
+    "31.03.",
+    "12.07.",
+    "28.09.",
+    "03.12.",
+    "27.12.",
+    "28.12.",
+    "29.12."
+].map(datestrToData);
+
+function sigmoid(parameter) {
+    parameter = ((parameter-1)*8)
+    return 1 / (1 + Math.exp(-parameter));
+  }
+
+function datestrToData(str) {
+    const regex = /(\d{2})\.(\d{2})\./;
+    const match = regex.exec(str);
+    const [, day, month] = match;
+    return { day: parseInt(day), month: parseInt(month) };
+}
+
+function percent(data1, data2, parameter) {
+    for(const daten of vips)
+    { if ((data1.day === daten.day   && data1.month === daten.month) || (data2.day===daten.day && data2.month === daten.month)){
+        percent1 = 89 + Math.cos(daten.day/31*Math.PI*2)*5 + (5*sigmoid(parameter));
+        return percent1;
+    }
+    else return sigmoid(parameter);
+    }
+}
+
+function algorithmus(data1, data2){
+    const positives = [];
+    for(const feature of data2.positives) {
+        for (const feature2 of data1.positives){
+            if(feature === feature2)
+            { positives.push(feature)}
+        }
+    }
+
+    const parameter = (anzahl/data2.positives.length)
+
+    
+    function sigmoid(parameter) {
+        parameter = ((parameter-1)*8)
+        return 1 / (1 + Math.exp(-parameter));
+    }
+
+    return {
+        negatives: data1.negatives,
+        negatives2: data2.negatives,
+        positives: data1.positives,
+        positives: data2.positives,
+        percent: percent(data1, data2),
+
+    }
+}
