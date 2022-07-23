@@ -502,6 +502,8 @@ function algorithmus(date1, date2){
 
     if (isVip(date1, date2)) {
         matchingBoost = "buff";
+    } else if (isBlaclisted(date1, date2)) {
+        matchingBoost = "nerf";
     }
 
     return {
