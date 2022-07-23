@@ -310,6 +310,23 @@ const zodiacSigns = [
     }
 ];
 
+const vips= [
+    "31.03.",
+    "12.07.",
+    "28.09.",
+    "03.12.",
+    "27.12.",
+    "28.12.",
+    "29.12."
+].map(datestrToData);
+
+const blacklist = [
+    "08.02.",
+    "15.06.",
+    "29.05.",
+    "10.09."
+].map(datestrToData);
+
 // const myFeatures = groups.flat();
 // const missing = zodiacSigns.map(({positives}) => positives.filter(feature => !myFeatures.includes(feature))).flat();
 // console.log(missing);
@@ -336,6 +353,7 @@ function onload() {
     const output = document.getElementById("output");
 
     const commons = document.getElementById("commons");
+    const challenges = document.getElementById("challenges");
     const relationDescription = document.getElementById("relation-description");
     const percent = document.getElementById("percent");
 
@@ -354,17 +372,23 @@ function onload() {
         const date1 = new Date(b1.value);
         const date2 = new Date(b2.value);
 
-        const sign1 = getZodiacSign(date1);
-        const sign2 = getZodiacSign(date2);
-
-        const result = algorithmus(sign1, sign2);
+        const result = algorithmus(date1, date2);
+        const negatives = [...result.negatives, ...result.negatives2].slice(0, 3);
 
         console.log(result);
 
         commons.innerHTML = result.positives.map(feature => `<li>${feature}</li>`).join('');
+        challenges.innerHTML = negatives.map(feature => `<li>${feature}</li>`).join('');
 
         percent.innerHTML = Math.round(result.percent * 100) / 100 + "%";
 
+        if (result.relationalMatching === "normal") {
+            relationDescription.innerHTML = "Brigitte.de hat euch leider nicht erwähnt...";
+        } else if (result.relationalMatching === "buff") {
+            relationDescription.innerHTML = "Nach Brigitte.de passt ihr sehr gut zusammen!";
+        } else {
+            relationDescription.innerHTML = "Brigitte.de sagt leider, dass ihr beiden eher wenig Erfolg zusammen haben werdet :(";
+        }
 
         output.classList.remove("hidden");
     }
@@ -392,21 +416,10 @@ function onload() {
 
 window.addEventListener("load", onload);
 
-const vips= [
-    "08.02.",
-    "31.03.",
-    "12.07.",
-    "28.09.",
-    "03.12.",
-    "27.12.",
-    "28.12.",
-    "29.12."
-].map(datestrToData);
 
-function sigmoid(parameter) {
-    // parameter = ((parameter-1)*8)
-    // return 1 / (1 + Math.exp(-parameter));
-    return parameter;
+
+function numberNoise(seed) {
+    return Math.cos(seed * 100);
 }
 
 function datestrToData(str) {
@@ -416,23 +429,57 @@ function datestrToData(str) {
     return { day: parseInt(day), month: parseInt(month) };
 }
 
-function percent(data1, data2, parameter) {
-    for(const daten of vips) {
-        if ((data1.from.day === daten.day && data1.from.month === daten.month) || (data2.from.day===daten.day && data2.from.month === daten.month)) {
-            const percent1 = 89 + Math.cos(daten.day/31*Math.PI*2)*5 + (5*sigmoid(parameter));
-            return percent1;
+function isVip(date1, date2) {
+    for (const daten of vips) {
+        if ((date1.getDate() === daten.day && date1.getMonth()+1 === daten.month) || (date2.getDate()===daten.day && date2.getMonth()+1 === daten.month)) {
+            return true;
         }
     }
-    return sigmoid(parameter) * 100 + Math.cos((data1.from.day + data2.from.day)/31/2*Math.PI*2);
 }
 
-function algorithmus(data1, data2){
+function isBlaclisted(date1, date2) {
+    for (const daten of blacklist) {
+        if ((date1.getDate() === daten.day && date1.getMonth()+1 === daten.month) || (date2.getDate()===daten.day && date2.getMonth()+1 === daten.month)) {
+            return true;
+        }
+    }
+}
+
+function percent(date1, date2, featurePercent, matchingBoost) {
+    const sign1 = getZodiacSign(date1);
+    const sign2 = getZodiacSign(date2);
+    if (isVip(date1, date2)) {
+        const percent1 = 89 + numberNoise(date1.getTime() + date2.getTime())*5 + (5 * featurePercent/100);
+        return percent1;
+    }
+    if (isBlaclisted(date1, date2)) {
+        const percent1= 0.69;
+        return percent1;
+    }
+
+    let boostPercent;
+    if (matchingBoost === "normal") {
+        boostPercent = 25;
+    }
+    if(matchingBoost === "buff"){
+        boostPercent = 50;
+    }
+    if(matchingBoost === "nerf"){
+        boostPercent = 0;
+    }
+
+    return (featurePercent*0.5) + boostPercent + numberNoise(sign1.from.day + sign2.from.day);
+}
+
+function algorithmus(date1, date2){
+    const sign1 = getZodiacSign(date1);
+    const sign2 = getZodiacSign(date2);
     const matches = [];
-    for(const feature of data2.positives) {
+    for(const feature of sign2.positives) {
         if (matches.includes(feature)) {
             continue;
         }
-        outer: for (const feature2 of data1.positives){
+        outer: for (const feature2 of sign1.positives){
             if (matches.includes(feature2)) {
                 continue;
             }
@@ -445,19 +492,24 @@ function algorithmus(data1, data2){
         }
     }
 
-    const featurePercent = (matches.length / (data1.positives.length + data2.positives.length)) * 100;
+    const featurePercent = (matches.length / (sign1.positives.length + sign2.positives.length)) * 100;
     let matchingBoost = "normal";
-    if (data1.relational.includes(data2.name) || data2.relational.includes(data1.name)) {
+    if (sign1.relational.includes(sign2.name) || sign2.relational.includes(sign1.name)) {
         matchingBoost = "buff";
-    } else if (data1.nonRelational.includes(data2.name) || data2.nonRelational.includes(data1.name)) {
+    } else if (sign1.nonRelational.includes(sign2.name) || sign2.nonRelational.includes(sign1.name)) {
         matchingBoost = "nerf";
     }
 
+    if (isVip(date1, date2)) {
+        matchingBoost = "buff";
+    }
+
     return {
-        negatives: data1.negatives,
-        negatives2: data2.negatives,
+        negatives: sign1.negatives,
+        negatives2: sign2.negatives,
         positives: matches,
-        percent: percent(data1, data2, featurePercent, matchingBoost),
-        allPositives: [...data1.positives, ...data2.positives]
+        percent: percent(date1, date2, featurePercent, matchingBoost),
+        relationalMatching: matchingBoost,
+        allPositives: [...sign1.positives, ...sign2.positives]
     }
 }
