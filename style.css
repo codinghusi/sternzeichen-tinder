@@ -67,7 +67,7 @@ body {
 
 .frame {
     border-radius: 15px;
-    padding: 0 2rem 2rem 2rem;
+    padding: 0 2rem 0rem 2rem;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 20%) 0 0 30px;
 }
@@ -142,10 +142,29 @@ h1 {
     border-color: var(--red);
 }
 
+#crystal-ball {
+    position: relative;
+    padding: 75px;
+}
+
+#crystal-ball img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 #percent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-weight: normal;
+    position: absolute;
+    left: 50%;
+    top: calc(50% - 5px);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    color: black;
+}
+
+#copyright {
+    font-size: 10pt;
+    text-align: center;
+    margin-top: 2rem;
 }
