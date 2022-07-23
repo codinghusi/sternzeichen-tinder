@@ -91,6 +91,7 @@ button {
     color: white;
     /*font-weight: bold;*/
     font-family: Roboto, Arial;
+    cursor: pointer;
 }
 
 input {
@@ -106,4 +107,34 @@ label {
 
 h1 {
 
+}
+
+.hidden {
+    display: none;
+}
+
+#commons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+}
+
+#commons li {
+    border-radius: 6px;
+    border: 1px solid black;
+    padding: 0.5rem;
+    margin: 0.25rem;
+    list-style: none;
+    font-size: 10pt;
+    font-weight: normal;
+}
+
+#percent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: normal;
 }

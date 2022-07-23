@@ -331,9 +331,13 @@ function getZodiacSign(date) {
 }
 
 function onload() {
-    const form = document.getElementById("form1");
+    const form = document.getElementById("form");
     const button = document.getElementById("button");
-    const output = document.getElementById("output1");
+    const output = document.getElementById("output");
+
+    const commons = document.getElementById("commons");
+    const relationDescription = document.getElementById("relation-description");
+    const percent = document.getElementById("percent");
 
     const b1 = form.birthdate1;
     const b2 = form.birthdate2;
@@ -347,10 +351,22 @@ function onload() {
             return;
         }
 
-        const date = new Date(b1.value);
+        const date1 = new Date(b1.value);
+        const date2 = new Date(b2.value);
 
-        const sign = getZodiacSign(date);
-        console.log(sign);
+        const sign1 = getZodiacSign(date1);
+        const sign2 = getZodiacSign(date2);
+
+        const result = algorithmus(sign1, sign2);
+
+        console.log(result);
+
+        commons.innerHTML = result.positives.map(feature => `<li>${feature}</li>`).join('');
+
+        percent.innerHTML = Math.round(result.percent * 100) / 100 + "%";
+
+
+        output.classList.remove("hidden");
     }
 
     function onsubmit(event) {
@@ -375,8 +391,6 @@ function onload() {
 }
 
 window.addEventListener("load", onload);
-const day = 27;
-console.log(89 + Math.cos(day/31*Math.PI*2)*5 + (5*sigmoid(parameter)));
 
 const vips= [
     "08.02.",
@@ -390,9 +404,10 @@ const vips= [
 ].map(datestrToData);
 
 function sigmoid(parameter) {
-    parameter = ((parameter-1)*8)
-    return 1 / (1 + Math.exp(-parameter));
-  }
+    // parameter = ((parameter-1)*8)
+    // return 1 / (1 + Math.exp(-parameter));
+    return parameter;
+}
 
 function datestrToData(str) {
     const regex = /(\d{2})\.(\d{2})\./;
@@ -402,38 +417,47 @@ function datestrToData(str) {
 }
 
 function percent(data1, data2, parameter) {
-    for(const daten of vips)
-    { if ((data1.day === daten.day   && data1.month === daten.month) || (data2.day===daten.day && data2.month === daten.month)){
-        percent1 = 89 + Math.cos(daten.day/31*Math.PI*2)*5 + (5*sigmoid(parameter));
-        return percent1;
+    for(const daten of vips) {
+        if ((data1.from.day === daten.day && data1.from.month === daten.month) || (data2.from.day===daten.day && data2.from.month === daten.month)) {
+            const percent1 = 89 + Math.cos(daten.day/31*Math.PI*2)*5 + (5*sigmoid(parameter));
+            return percent1;
+        }
     }
-    else return sigmoid(parameter);
-    }
+    return sigmoid(parameter) * 100 + Math.cos((data1.from.day + data2.from.day)/31/2*Math.PI*2);
 }
 
 function algorithmus(data1, data2){
-    const positives = [];
+    const matches = [];
     for(const feature of data2.positives) {
-        for (const feature2 of data1.positives){
-            if(feature === feature2)
-            { positives.push(feature)}
+        if (matches.includes(feature)) {
+            continue;
+        }
+        outer: for (const feature2 of data1.positives){
+            if (matches.includes(feature2)) {
+                continue;
+            }
+            for (const group of groups) {
+                if (group.includes(feature) && group.includes(feature2)) {
+                    matches.push(feature);
+                    break outer;
+                }
+            }
         }
     }
 
-    const parameter = (anzahl/data2.positives.length)
-
-    
-    function sigmoid(parameter) {
-        parameter = ((parameter-1)*8)
-        return 1 / (1 + Math.exp(-parameter));
+    const featurePercent = (matches.length / (data1.positives.length + data2.positives.length)) * 100;
+    let matchingBoost = "normal";
+    if (data1.relational.includes(data2.name) || data2.relational.includes(data1.name)) {
+        matchingBoost = "buff";
+    } else if (data1.nonRelational.includes(data2.name) || data2.nonRelational.includes(data1.name)) {
+        matchingBoost = "nerf";
     }
 
     return {
         negatives: data1.negatives,
         negatives2: data2.negatives,
-        positives: data1.positives,
-        positives: data2.positives,
-        percent: percent(data1, data2),
-
+        positives: matches,
+        percent: percent(data1, data2, featurePercent, matchingBoost),
+        allPositives: [...data1.positives, ...data2.positives]
     }
 }

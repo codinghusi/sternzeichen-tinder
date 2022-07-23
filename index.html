@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Sternzeichen Tinder</title>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
 </head>
@@ -10,10 +10,10 @@
     <div class="column">
         <div class="frame">
             <h1>Wie gut passt ihr zusammen?</h1>
-            <form class="form" id="form1">
+            <form class="form" id="form">
                 <label for="birthdate1">1. Geburtsdatum: </label>
                 <input type="date" id="birthdate1" name="birthdate1" required />
-                <label for="birthdate1">2. Geburtsdatum: </label>
+                <label for="birthdate2">2. Geburtsdatum: </label>
                 <input type="date" id="birthdate2" name="birthdate2" required />
                 <button id="button">Auswerten</button>
             </form>
@@ -22,7 +22,12 @@
         <br />
 
         <div class="frame hidden" id="output">
-
+            <h2>Interessen, die euch verbinden:</h2>
+            <ul id="commons"></ul>
+            <h2>Was Brigitte.de über euch beide sagt:</h2>
+            <p id="relation-description"></p>
+            <h2>Zertifizierte Match-Rate:</h2>
+            <div id="percent"></div>
         </div>
     </div>
 </body>
