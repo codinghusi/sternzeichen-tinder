@@ -356,6 +356,8 @@ function onload() {
     const challenges = document.getElementById("challenges");
     const relationDescription = document.getElementById("relation-description");
     const percent = document.getElementById("percent");
+    const signs = document.getElementById("signs");
+
 
     const b1 = form.birthdate1;
     const b2 = form.birthdate2;
@@ -371,6 +373,8 @@ function onload() {
 
         const date1 = new Date(b1.value);
         const date2 = new Date(b2.value);
+        const sign1 = getZodiacSign(date1);
+        const sign2 = getZodiacSign(date2);
 
         const result = algorithmus(date1, date2);
         const negatives = [...result.negatives, ...result.negatives2].slice(0, 3);
@@ -379,6 +383,7 @@ function onload() {
 
         commons.innerHTML = result.positives.map(feature => `<li>${feature}</li>`).join('');
         challenges.innerHTML = negatives.map(feature => `<li>${feature}</li>`).join('');
+        signs.innerHTML = `<span>${sign1.name}</span> &#10133; <span>${sign2.name}</span>`
 
         percent.innerHTML = Math.round(result.percent * 100) / 100 + "%";
 
@@ -475,6 +480,7 @@ function algorithmus(date1, date2){
     const sign1 = getZodiacSign(date1);
     const sign2 = getZodiacSign(date2);
     const matches = [];
+    const allPositives = [...new Set([...sign1.positives, ...sign2.positives])];
     for(const feature of sign2.positives) {
         if (matches.includes(feature)) {
             continue;
@@ -492,7 +498,7 @@ function algorithmus(date1, date2){
         }
     }
 
-    const featurePercent = (matches.length / (sign1.positives.length + sign2.positives.length)) * 100;
+    const featurePercent = (matches.length / allPositives.length) * 100;
     let matchingBoost = "normal";
     if (sign1.relational.includes(sign2.name) || sign2.relational.includes(sign1.name)) {
         matchingBoost = "buff";
@@ -512,6 +518,6 @@ function algorithmus(date1, date2){
         positives: matches,
         percent: percent(date1, date2, featurePercent, matchingBoost),
         relationalMatching: matchingBoost,
-        allPositives: [...sign1.positives, ...sign2.positives]
+        allPositives
     }
 }
