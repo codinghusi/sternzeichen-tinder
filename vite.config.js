@@ -1,5 +1,5 @@
-export default {
-    build: {
-        minify: true
-    }
-}
+import {defineConfig} from "vite";
+
+export default defineConfig({
+    base: ''
+})
