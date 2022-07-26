@@ -1,0 +1,9 @@
+export const categories = [
+    ["ehrlich", "energievoll", "visionär", "loyal", "leben intensiv", "kontaktfreudig", "sorgfältig", "spirituell", "treu", "verführerisch", "genießerisch", "tolerant", "großzügig", "geheimnisvoll", "große Seelenkraft"],
+    ["abenteuerlustig", "freundlich", "energievoll", "visionär", "leben intensiv", "diszipliniert", "ermunternd", "kreativ", "individuell", "unabhängig", "leidenschaftlich", "wissbegierig"],
+    ["ehrlich", "energievoll", "visionär", "loyal", "vergessen nichts", "organisiert", "diszipliniert", "können Missstände ansprechen", "feministisch", "verantwortungsvoll", "unabhängig", "wertebewusst", "treu", "tolerant", "selbstständig", "unabhängig"],
+    ["abenteuerlustig", "selbstironisch", "energievoll", "charismatisch", "kontaktfreudig", "diplomatisch", "charmant", "auffällig", "authentisch", "schnell", "willensstark", "selbstständig", "sportlich"],
+    ["ehrlich", "abenteuerlustig", "selbstironisch", "energievoll", "loyal", "charismatisch", "charmant", "können Missstände ansprechen", "gesellig", "spontan", "treu", "verführerisch", "freundlich", "freundschaftlich", "kommunikativ", "großzügig"],
+    ["energievoll", "ermunternd", "spirituell", "emotional", "romantisch", "verständnisvoll", "verzeihend", "leidenschaftlich", "genießerisch", "freundschaftlich", "empfindsam", "gefühlsbetont"],
+    ["freundlich", "energievoll", "visionär", "vergessen nichts", "organisiert", "diplomatisch", "optimistisch", "sorgfältig", "diszipliniert", "können Missstände ansprechen", "mutig", "führungsstark", "selbstbewusst", "authentisch", "kommunikativ", "wissbegierig", "schnell", "willensstark", "selbstständig", "sportlich", "unabhängig"]
+];
