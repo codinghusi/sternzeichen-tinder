@@ -6,11 +6,13 @@ import {numberNoise} from "./helper-functions";
 function percent(date1, date2, featurePercent, matchingBoost) {
     const sign1 = getZodiacSign(date1);
     const sign2 = getZodiacSign(date2);
-    if (isVip(date1, date2)) {
-        return 89 + numberNoise(date1.getTime() + date2.getTime())*5 + (5 * featurePercent/100);
-    }
+
     if (isBlacklisted(date1, date2)) {
         return 0.69;
+    }
+
+    if (isVip(date1, date2)) {
+        return 89 + numberNoise(date1.getTime() + date2.getTime())*5 + (5 * featurePercent/100);
     }
 
     let boostPercent;
@@ -18,7 +20,7 @@ function percent(date1, date2, featurePercent, matchingBoost) {
         boostPercent = 25;
     }
     if(matchingBoost === "buff"){
-        boostPercent = 50;
+        boostPercent = 48;
     }
     if(matchingBoost === "nerf"){
         boostPercent = 0;
