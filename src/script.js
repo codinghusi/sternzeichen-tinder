@@ -3,7 +3,6 @@ import {algorithm} from "./matching-algorithm";
 
 function onload() {
     const form = document.getElementById("form");
-    const button = document.getElementById("button");
     const output = document.getElementById("output");
 
     const commons = document.getElementById("commons");
@@ -32,8 +31,6 @@ function onload() {
 
         const result = algorithm(date1, date2);
         const negatives = [...result.negatives, ...result.negatives2].slice(0, 3);
-
-        console.log(result);
 
         commons.innerHTML = result.positives.map(feature => `<li>${feature}</li>`).join('');
         challenges.innerHTML = negatives.map(feature => `<li>${feature}</li>`).join('');
