@@ -35,6 +35,7 @@ function onload() {
             } else {
                 window.history.pushState({}, null, url);
                 hasPushedHistory = true;
+                output.classList.add("hidden");
             }
         } else {
             button.classList.add("disabled");
