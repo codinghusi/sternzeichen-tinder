@@ -39,6 +39,10 @@ function onload() {
         } else {
             button.classList.add("disabled");
         }
+
+        if (!b1.checkValidity() || !b2.checkValidity()) {
+            button.classList.add("disabled");
+        }
     }
 
     function evaluate() {
