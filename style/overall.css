@@ -1,0 +1,36 @@
+body {
+    display: flex;
+    /*flex-direction: column;*/
+    justify-content: center;
+    background-color: rgb(213, 218, 230);
+    font-family: Roboto, sans-serif, Arial;
+}
+
+button {
+    background-color: rgb(65, 62, 247);
+    border: none;
+    border-radius: 5px;
+    padding: 1rem;
+    color: white;
+    font-family: Roboto, Arial, sans-serif;
+    cursor: pointer;
+}
+
+button.disabled {
+    background-color: rgb(131, 130, 179);
+    cursor: auto;
+}
+
+input {
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid black;
+    padding: 0.5rem 0.5rem 0.5rem 0;
+    outline: none;
+    color: black;
+    cursor: pointer;
+}
+
+label {
+    cursor: pointer;
+}
