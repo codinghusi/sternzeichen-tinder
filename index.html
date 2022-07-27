@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Sternzeichen Tinder</title>
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="style/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <script type="module" src="src/script.js"></script>
+    <script type="module" src="src/main.js"></script>
 </head>
 <body>
     <div class="column">
-        <div class="frame">
+        <div class="card">
             <h1>Wie gut passt ihr zusammen?</h1>
             <form class="form" id="form">
                 <label for="birthdate1">1. Geburtsdatum: </label>
                 <input type="date" id="birthdate1" name="birthdate1" required />
                 <label for="birthdate2">2. Geburtsdatum: </label>
                 <input type="date" id="birthdate2" name="birthdate2" required />
-                <button id="button">Auswerten</button>
+                <button id="button" class="disabled">Auswerten</button>
             </form>
 
             <p id="copyright">&lt;/&gt; with &#10084; by David Fingerhut, Jonas Fingerhut and Gerrit Weiermann</p>
@@ -24,7 +24,7 @@
 
         <br />
 
-        <div class="frame hidden" id="output">
+        <div class="card hidden" id="output">
             <h2>Eure Sternzeichen:</h2>
             <div id="signs"></div>
             <h2>Interessen, die euch verbinden:</h2>
@@ -35,7 +35,7 @@
             <p id="relation-description"></p>
             <h2>Zertifizierte Match-Rate:</h2>
             <div id="crystal-ball">
-                <img src="ball.svg" width="150" height="150" />
+                <img src="ball.svg" alt="Magische Kristallkugel" width="150" height="150" />
                 <div id="percent"></div>
             </div>
         </div>

@@ -4,7 +4,7 @@ import {algorithm} from "./matching-algorithm";
 function onload() {
     const form = document.getElementById("form");
     const output = document.getElementById("output");
-
+    const button = document.getElementById("button");
     const commons = document.getElementById("commons");
     const challenges = document.getElementById("challenges");
     const relationDescription = document.getElementById("relation-description");
@@ -14,6 +14,32 @@ function onload() {
 
     const b1 = form.birthdate1;
     const b2 = form.birthdate2;
+
+    let hasPushedHistory = false;
+
+    b1.addEventListener("change", updateURL);
+    b2.addEventListener("change", updateURL);
+
+    function updateURL() {
+        const params = new URLSearchParams(window.location.search);
+        params.set("birthdate1", b1.value);
+        params.set("birthdate2", b2.value);
+        const search = "?" + params.toString();
+
+        const url = window.location.href.split("?")[0] + search;
+
+        if (window.location.search !== search) {
+            button.classList.remove("disabled");
+            if (hasPushedHistory) {
+                window.history.replaceState({}, null, url);
+            } else {
+                window.history.pushState({}, null, url);
+                hasPushedHistory = true;
+            }
+        } else {
+            button.classList.add("disabled");
+        }
+    }
 
     function evaluate() {
         const params = new URLSearchParams(window.location.search);
@@ -47,17 +73,18 @@ function onload() {
         }
 
         output.classList.remove("hidden");
+        // reset the animation
+        output.style.animation = "none";
+        output.offsetHeight; // trigger reflow
+        output.style.animation = "open-animation 500ms ease";
+
+        button.classList.add("disabled");
     }
 
     function onsubmit(event) {
-        const params = new URLSearchParams(window.location.search);
-        params.set("birthdate1", b1.value);
-        params.set("birthdate2", b2.value);
-        const search = "?" + params.toString();
-
-        if (window.location.search !== search) {
-            window.history.pushState({}, null, window.location.href.split("?")[0] + search);
+        if (hasPushedHistory) {
             evaluate();
+            hasPushedHistory = false;
         }
 
         event.preventDefault();
