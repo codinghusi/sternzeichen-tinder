@@ -2,7 +2,7 @@
 **Vorab:** Dieses Projekt ist nur ein Spaß.
 Wir glauben nicht an Sternzeichen und haben kein ernsthaftes Interesse die Ausgaben der Web App auf die pseudo wissenschaftlichen Annahmen der Astrologie abzustimmen.
 
-Die Website ist unter dem Link [Sternzeichen Tinder](https://codinghusi.github.io/zodiacsign-gimmik) zu erreichen.
+Die Website ist unter dem Link [Sternzeichen Tinder](https://codinghusi.github.io/sternzeichen-tinder/) zu erreichen.
 Man gibt dort zwei Geburtsdaten an und lässt auswerten, wie gut die Sternzeichen zusammenpassen.
 Dafür wurde die Quelle [Brigitte.de](https://www.brigitte.de/) zurate gezogen, die die angeblichen Stärken, Schwächen und Sternzeichen, die am besten bzw. schlechtesten mit einer Person eine Beziehung haben kann.
 
@@ -18,6 +18,3 @@ Die Berechnung der "Zertifizierten Match-Rate" ergibt sich wie folgt:
 Da wir gerne etwas schummeln wollten, gibt es die Möglichkeit manche Geburtsdaten nochmal extra zu pushen, bzw. speziell ausgewählte Geburtsdaten stark zu schwächen:
 * Ist eins der Geburtsdaten auf der [Blacklist](src/special-dates.js), so ist die Match-Rate immer 0,69%
 * Ist eins der Geburtsdaten auf der [VIP Liste](src/special-dates.js) (und nicht auf der Blacklist), so ist die Match-Rate immer zwischen 84% - 99%
-
-
-*(Oh und der Projektname hat einen Rechtschreibfehler: Gimmik zu Gimmick)*
